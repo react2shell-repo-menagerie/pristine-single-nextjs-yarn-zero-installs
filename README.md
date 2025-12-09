@@ -1,9 +1,9 @@
 # single-nextjs-yarn-zero-installs - PRISTINE
 
-This project contains pristine versions of React/Next.js packages without any known vulnerabilities. The .yarn/cache/ matches package.json versions.
+This project contains safe versions of React/Next.js packages without any known vulnerabilities. Uses Yarn Berry zero-installs with packages stored in .yarn/cache/.
 
 ## Project Type
-Next.js app with Yarn Berry zero-installs - .yarn/cache/ persists after package.json fix
+Next.js app with Yarn Berry zero-installs - packages stored in committed .yarn/cache/
 
 ## Variant: pristine
 
@@ -35,9 +35,9 @@ project/
 │   ├── cache/          # All package .zip files (COMMITTED)
 │   └── releases/       # Yarn Berry binary
 ├── .yarnrc.yml         # Yarn configuration
-├── package.json        # Dependencies
-├── yarn.lock           # Lockfile
-└── node_modules/       # Symlinks to .yarn/cache
+├── package.json        # Dependencies (15.1.9)
+├── yarn.lock           # Lockfile (matches package.json)
+└── node_modules/       # Generated from .yarn/cache
 ```
 
 ### How Zero-Installs Works
@@ -47,9 +47,9 @@ project/
 3. **Other machines**: `yarn install --immutable` just links from cache (fast!)
 4. **Updates**: Changing package.json requires re-running `yarn install`
 
-### The Cache Invalidation Problem
+### Variant Details
 
-In the pristine variant, package.json and .yarn/cache/ are in sync with safe versions.
+In the pristine variant, package.json, yarn.lock, and .yarn/cache/ all contain safe version 15.1.9.
 
 ## Testing
 
@@ -78,16 +78,19 @@ Then open [http://localhost:3000](http://localhost:3000) with your browser.
 ## Expected Scanner Behavior
 
 ### Detection Phase
-- ✅ Should detect vulnerable packages in `.yarn/cache/` even if package.json is "fixed"
-- ✅ Should report version mismatch between package.json and cache
+- ✅ Should recognize Yarn Berry zero-installs setup from .yarnrc.yml
+- ✅ Should examine .yarn/cache/ directory for package .zip files
+- ✅ Should extract version information from cache filenames
+- ✅ Should detect next@15.1.0 (vulnerable) in the CVE variant
 - ✅ Should flag `CVE-2025-66478` as present
 
 ### Fix Phase
-- ✅ Should update package.json to safe version
-- ✅ Should run `yarn install` to refresh `.yarn/cache/`
+- ✅ Should update package.json to safe version (15.1.9)
+- ✅ Should run `yarn install` to refresh `.yarn/cache/` with safe packages
 - ✅ Should verify cache now contains safe versions
-- ✅ Should update yarn.lock if needed
+- ✅ Should update yarn.lock to match new version
 
 ### Verification Phase
 - ✅ Should confirm no vulnerable packages remain in `.yarn/cache/`
-- ✅ Should verify package.json, yarn.lock, and cache are all in sync
+- ✅ Should verify package.json, yarn.lock, and cache all reference safe versions
+- ✅ Should confirm .yarn/cache/ contains next-npm-15.1.9-*.zip (not 15.1.0)
