@@ -1,0 +1,18 @@
+{
+  "name": "single-nextjs-yarn-zero-installs",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "npx fix-react2shell-next --dry-run --json",
+    "fix": "npx fix-react2shell-next --json"
+  },
+  "dependencies": {
+    "next": "15.1.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "packageManager": "yarn@4.5.3"
+}

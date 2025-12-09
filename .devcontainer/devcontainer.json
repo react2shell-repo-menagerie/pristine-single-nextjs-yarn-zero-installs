@@ -1,0 +1,5 @@
+{
+  "name": "React2Shell (pristine)",
+  "image": "react2shell-repo-menagerie:base",
+  "postCreateCommand": "yarn install --immutable"
+}
